@@ -7,7 +7,7 @@ const router = express.Router();
 
 // User Registration 
 router.post('/register', async (req, res) => {
-  const { name, email, password,role } = req.body;
+  const { name, email, password, role, preferences } = req.body; // Include preferences
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -15,9 +15,10 @@ router.post('/register', async (req, res) => {
     const userRole = role || 'Faculty';
 
     const newUser = await pool.query(
-      'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *',
-      [name, email, hashedPassword, userRole]
+      'INSERT INTO users (name, email, password, role, preferences) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [name, email, hashedPassword, userRole, preferences] // Add preferences to the query
     );
+
     res.status(201).json({
       message: 'User registered successfully',
       user: newUser.rows[0],
@@ -29,6 +30,7 @@ router.post('/register', async (req, res) => {
     });
   }
 });
+
 
 
 // User Login
