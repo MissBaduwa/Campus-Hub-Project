@@ -47,12 +47,7 @@ export const updateUserPreferences = (id, preferences) => {
 
 export const createEvent = async (eventData) => {
   try {
-    const token = localStorage.getItem('token');
-    const response = await axios.post('http://localhost:5000/events/events', eventData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.post('http://localhost:5000/events/events', eventData);
     return response.data;
   } catch (error) {
     console.error('Error creating event:', error);
@@ -71,7 +66,6 @@ export const fetchEventCalendar = (type, location) => {
 
 export const deleteEvent = async (event_id) => {
   try {
-    const token = localStorage.getItem('token');
     const response = await axios.delete(`http://localhost:5000/events/${event_id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,

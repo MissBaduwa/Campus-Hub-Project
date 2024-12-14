@@ -11,7 +11,7 @@ const Landing = () => {
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute inset-0 bg-black bg-opacity-10"></div>
+      <div className="absolute inset-0 bg-black bg-opacity-0"></div>
 
       <div className="flex flex-col items-center justify-center flex-grow z-10 relative mt-[27rem]">
         <h1 className="text-4xl font-extrabold mb-4 text-center">
