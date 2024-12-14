@@ -6,6 +6,7 @@ import db from './db.js';
 import authRoutes from './routes/auth.js';
 import eventRoutes from './routes/events.js';
 import userRoutes from './routes/user.js';  
+import path from 'path';
 
 
 dotenv.config();
@@ -19,6 +20,14 @@ app.use('/auth', authRoutes);  // Handles /auth/register and /auth/login
 app.use('/events', eventRoutes);  // Handles event-related routes
 app.use('/users', userRoutes);  // Handles user profile and preferences routes
 
+
+const __dirname = path.resolve(); // Get the root directory
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// Catch-all route to serve index.html for React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
