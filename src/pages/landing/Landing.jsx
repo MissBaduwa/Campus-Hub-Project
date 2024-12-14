@@ -6,7 +6,7 @@ const Landing = () => {
     <div 
       className="min-h-screen flex flex-col bg-gradient-to-r from-pink-500 to-purple-900 text-white relative"
       style={{
-        backgroundImage: "url('/src/assets/img4.jpg')",
+        backgroundImage: "url('src/assets/img4.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
