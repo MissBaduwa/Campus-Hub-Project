@@ -126,7 +126,7 @@ const Register = () => {
          
          <div className="md:block w-1/2 bg-pink-500">
           <img
-            src="/assets/img3.jpg" 
+            src="/assets/img5.jpg" 
             alt="Registration Illustration"
             className="w-full h-full object-cover"
           />
