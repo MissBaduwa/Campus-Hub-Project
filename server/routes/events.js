@@ -34,45 +34,53 @@ const authenticateToken = (req, res, next) => {
 const verifyAdmin = (req, res, next) => {
   console.log('User ID:', req.userId, 'Role:', req.role);
   
-  if (req.userId === 10) {
+  if (req.user.id === 10 && req.user.role === 'Admin') {
     next();
   } else {
-    res.status(403).json({ message: 'Access denied' });
+    res.status(403).json({ message: 'Access denied. Admin rights required.' });
   }
   
 };
 
 
 // Create new event
-router.post('/events',authenticateToken, verifyAdmin, async (req, res) => {
-  const { name, event_date, location, capacity, available_seats, description, type_id } = req.body;
-  
+// Create new event
+router.post('/events', async (req, res) => {
   try {
-    const result = await db.query(
+    const { name, event_date, location, capacity, available_seats, description, type_id } = req.body;
+    
+    const newEvent = await db.query(
       'INSERT INTO events (name, event_date, location, capacity, available_seats, description, type_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
       [name, event_date, location, capacity, available_seats, description, type_id]
     );
     
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
-    console.error('Error inserting event:', error);
-    res.status(500).json({ error: 'Failed to create event' });
+    res.status(201).json(newEvent.rows[0]);
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating event', error: err.message });
   }
 });
+
 
 
 // Delete event (only for Admin User)
-router.delete('/:event_id', authenticateToken, verifyAdmin, async (req, res) => {
+router.delete('/:event_id', async (req, res) => {
   const { event_id } = req.params;
 
   try {
+    // Check if event exists
+    const event = await db.query('SELECT * FROM events WHERE event_id = $1', [event_id]);
+    if (event.rows.length === 0) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    // Delete event
     await db.query('DELETE FROM events WHERE event_id = $1', [event_id]);
     res.status(200).json({ message: 'Event deleted successfully' });
   } catch (err) {
-    console.error('Error deleting event:', err);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: 'Error deleting event', error: err.message });
   }
 });
+
 
 
 // Get calendar events
