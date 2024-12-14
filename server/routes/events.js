@@ -34,7 +34,7 @@ const authenticateToken = (req, res, next) => {
 const verifyAdmin = (req, res, next) => {
   console.log('User ID:', req.userId, 'Role:', req.role);
   
-  if (req.user.id === 10 && req.user.role === 'Admin') {
+  if (req.userId === 10) {
     next();
   } else {
     res.status(403).json({ message: 'Access denied' });
