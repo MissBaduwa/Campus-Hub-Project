@@ -70,7 +70,7 @@ const Profile = () => {
 
           <div className="w-32 h-32 bg-gray-200 rounded-full flex-shrink-0">
             <img
-              src="/src/assets/img6.jpg"
+              src="/assets/img6.jpg"
               alt="Profile"
               className="w-full h-full object-cover rounded-full"
             />
